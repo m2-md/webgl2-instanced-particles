@@ -1,4 +1,4 @@
-# webgl2-instanced-particles
+# High-Volume 2D Particle System with WebGL2 Instancing
 
 <!-- LINKS:BEGIN — üretildi: scripts/sync-repo-links.py · elle düzenleme -->
 **▶ [Live demo](https://m2-md.github.io/webgl2-instanced-particles/)** · [Source](https://github.com/m2-md/webgl2-instanced-particles)
@@ -13,9 +13,6 @@ switch and the draw call count and the bytes uploaded per frame change instantly
 
 The technical heart: `gl.vertexAttribDivisor(loc, 1)` on the instance attributes, `0` on
 the template attribute.
-
-Article: `articles/webgl2-instanced-particles/article.md`
-Previous step: `projects/webgl2-sprite-batching-atlas/` (sprite batching + atlas).
 
 ## What's here
 
