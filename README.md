@@ -1,5 +1,9 @@
 # webgl2-instanced-particles
 
+<!-- LINKS:BEGIN — üretildi: scripts/sync-repo-links.py · elle düzenleme -->
+**▶ [Live demo](https://m2-md.github.io/webgl2-instanced-particles/)** · [Source](https://github.com/m2-md/webgl2-instanced-particles)
+<!-- LINKS:END -->
+
 A WebGL2 instancing example that collapses two hundred thousand particles into a
 **single** `drawArraysInstanced` call. The unit-quad template is uploaded to the GPU
 once at setup (`STATIC_DRAW`); the only thing that goes up every frame is a 24-byte
