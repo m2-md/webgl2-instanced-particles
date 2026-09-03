@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="tr">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mührü Bir Kez Oy — WebGL2 Instanced Particles</title>
+    <title>Carve the Stamp Once — WebGL2 Instanced Particles</title>
     <style>
       html,
       body {
@@ -84,21 +84,21 @@
     <div id="ui">
       <h1>Instanced Particles</h1>
       <div class="row" id="counts">
-        <button data-count="10000">10.000</button>
-        <button data-count="50000">50.000</button>
-        <button data-count="200000">200.000</button>
+        <button data-count="10000">10,000</button>
+        <button data-count="50000">50,000</button>
+        <button data-count="200000">200,000</button>
       </div>
       <div class="row" id="modes">
         <button data-mode="instanced">instancing</button>
         <button data-mode="batched">batching</button>
       </div>
       <div id="hud">
-        <span class="dim">yol</span><b id="v-mode">—</b>
-        <span class="dim">parçacık</span><b id="v-count">—</b>
+        <span class="dim">path</span><b id="v-mode">—</b>
+        <span class="dim">particles</span><b id="v-count">—</b>
         <span class="dim">FPS</span><b id="v-fps">—</b>
-        <span class="dim">kare süresi</span><b id="v-ms">—</b>
+        <span class="dim">frame time</span><b id="v-ms">—</b>
         <span class="dim">draw call</span><b id="v-calls">—</b>
-        <span class="dim">kare başına</span><b id="v-bytes">—</b>
+        <span class="dim">per frame</span><b id="v-bytes">—</b>
       </div>
     </div>
 

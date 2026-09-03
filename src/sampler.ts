@@ -1,4 +1,4 @@
-// 500 ms'lik pencereyle FPS ve ortalama kare süresi
+// FPS and average frame time over a 500 ms window
 export function createSampler(windowMs = 500) {
   let frames = 0;
   let last = 0;

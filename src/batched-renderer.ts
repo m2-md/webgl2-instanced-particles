@@ -1,5 +1,5 @@
-// batched-renderer.ts — #7'deki batching yolunun renk taşıyan hali.
-// Sprite başına dört köşe, köşe başına yedi float; indeksli çizim.
+// batched-renderer.ts — the batching path from #7, now carrying color.
+// Four corners per sprite, seven floats per vertex; indexed drawing.
 import { createProgram } from "./gl";
 import { BATCHED_VERTEX_SHADER, PARTICLE_FRAGMENT_SHADER } from "./shaders";
 import {
@@ -11,7 +11,7 @@ import { BYTES_PER_FLOAT } from "./instance-buffer";
 
 export interface BatchedRenderer {
   setResolution(width: number, height: number): void;
-  /** Dönüş: bu çağrıda GPU'ya yüklenen bayt sayısı. */
+  /** Returns: the number of bytes uploaded to the GPU in this call. */
   drawChunk(vertices: Float32Array, spriteCount: number): number;
   dispose(): void;
 }
@@ -31,7 +31,7 @@ export function createBatchedRenderer(
   const aColor = gl.getAttribLocation(program, "a_color");
   const uResolution = gl.getUniformLocation(program, "u_resolution");
 
-  const STRIDE = FLOATS_PER_BATCHED_VERTEX * BYTES_PER_FLOAT; // 28 bayt
+  const STRIDE = FLOATS_PER_BATCHED_VERTEX * BYTES_PER_FLOAT; // 28 bytes
 
   const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
@@ -44,7 +44,7 @@ export function createBatchedRenderer(
     gl.DYNAMIC_DRAW,
   );
 
-  // Burada divisor yok: üç attribute da köşe başına ilerler (divisor 0).
+  // No divisor here: all three attributes advance per vertex (divisor 0).
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, STRIDE, 0);
   gl.enableVertexAttribArray(aUv);

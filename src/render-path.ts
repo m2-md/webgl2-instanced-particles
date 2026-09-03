@@ -1,4 +1,4 @@
-// render-path.ts — iki yolu tek arayüzün arkasına koyar
+// render-path.ts — puts both paths behind a single interface
 import { createInstancedRenderer } from "./instanced-renderer";
 import { createBatchedRenderer } from "./batched-renderer";
 import { InstanceBuffer } from "./instance-buffer";

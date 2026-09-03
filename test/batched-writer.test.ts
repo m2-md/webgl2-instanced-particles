@@ -7,18 +7,18 @@ import {
 } from "../src/batched-writer";
 
 describe("writeBatchedSprite", () => {
-  it("sprite başına 28 float yazar, dört köşe doğru sırada", () => {
+  it("writes 28 floats per sprite with the four corners in order", () => {
     const out = new Float32Array(FLOATS_PER_BATCHED_SPRITE * 2);
     writeBatchedSprite(out, 0, 10, 20, 30, 1, 0, 0);
 
-    // sol üst / sol alt / sağ üst / sağ alt konumları
+    // top-left / bottom-left / top-right / bottom-right positions
     expect([out[0], out[1]]).toEqual([10, 20]);
     expect([out[7], out[8]]).toEqual([10, 50]);
     expect([out[14], out[15]]).toEqual([40, 20]);
     expect([out[21], out[22]]).toEqual([40, 50]);
   });
 
-  it("aynı renk dört kere tekrar yazılır", () => {
+  it("repeats the same color across all four corners", () => {
     const out = new Float32Array(FLOATS_PER_BATCHED_SPRITE);
     writeBatchedSprite(out, 0, 0, 0, 10, 0.25, 0.5, 0.75);
 
@@ -28,7 +28,7 @@ describe("writeBatchedSprite", () => {
     }
   });
 
-  it("ikinci sprite birincinin üzerine yazmaz", () => {
+  it("does not let the second sprite overwrite the first", () => {
     const out = new Float32Array(FLOATS_PER_BATCHED_SPRITE * 2);
     writeBatchedSprite(out, 0, 1, 1, 2, 0, 0, 0);
     writeBatchedSprite(out, 1, 100, 200, 2, 0, 0, 0);

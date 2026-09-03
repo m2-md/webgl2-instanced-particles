@@ -44,7 +44,7 @@ export function makeParticles(
     particles[i] = {
       x: rng() * (width - size),
       y: rng() * (height - size),
-      vx: (rng() - 0.5) * 180, // piksel/saniye
+      vx: (rng() - 0.5) * 180, // pixels/second
       vy: (rng() - 0.5) * 180,
       size,
       r,

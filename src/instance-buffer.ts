@@ -1,7 +1,7 @@
 // instance-buffer.ts
-// Şablon: birim kare. Köşe koordinatı hem konum çarpanı hem
-// de parçacık içi konum (0..1) olarak kullanılır.
-// TRIANGLE_STRIP sırası: sol üst, sol alt, sağ üst, sağ alt.
+// Template: the unit quad. The corner coordinate is used both as a position
+// multiplier and as the in-particle coordinate (0..1).
+// TRIANGLE_STRIP order: top-left, bottom-left, top-right, bottom-right.
 export const QUAD_VERTICES = new Float32Array([0, 0, 0, 1, 1, 0, 1, 1]);
 
 export const FLOATS_PER_INSTANCE = 6; // x, y, size, r, g, b
@@ -15,10 +15,10 @@ export class InstanceBuffer {
 
   constructor(capacity: number) {
     if (!Number.isInteger(capacity) || capacity < 1) {
-      throw new RangeError("capacity pozitif bir tam sayı olmalı");
+      throw new RangeError("capacity must be a positive integer");
     }
     this.capacity = capacity;
-    // Tek seferlik ayırma: kare döngüsünde bir daha allocation yok
+    // One-time allocation: no further allocation inside the frame loop
     this.data = new Float32Array(capacity * FLOATS_PER_INSTANCE);
   }
 
@@ -38,8 +38,8 @@ export class InstanceBuffer {
     this.count = 0;
   }
 
-  // Kapasite dolmuşsa false döner; batching'deki gibi flush yok,
-  // çünkü tek draw call'ın kapasitesi zaten örnek sayısı kadar.
+  // Returns false when capacity is full; there is no flush like in batching,
+  // because a single draw call already holds as many instances as we have.
   push(
     x: number,
     y: number,

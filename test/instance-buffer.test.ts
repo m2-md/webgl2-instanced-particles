@@ -7,8 +7,8 @@ import {
   QUAD_VERTICES,
 } from "../src/instance-buffer";
 
-describe("InstanceBuffer paketleme", () => {
-  it("her kayıt tam 6 float, doğru offsette yazılır", () => {
+describe("InstanceBuffer packing", () => {
+  it("writes exactly 6 floats per record at the right offset", () => {
     const buf = new InstanceBuffer(4);
     buf.push(10, 20, 8, 1, 0.5, 0.25);
     buf.push(100, 200, 16, 0, 1, 0);
@@ -16,13 +16,13 @@ describe("InstanceBuffer paketleme", () => {
     expect(Array.from(buf.data.subarray(0, 6))).toEqual([
       10, 20, 8, 1, 0.5, 0.25,
     ]);
-    // İkinci kayıt tam 6 float sonra başlar
+    // The second record starts exactly 6 floats later
     expect(Array.from(buf.data.subarray(6, 12))).toEqual([
       100, 200, 16, 0, 1, 0,
     ]);
   });
 
-  it("kayıt sayısı ile bayt boyutu tutarlıdır", () => {
+  it("keeps the record count and the byte size consistent", () => {
     const buf = new InstanceBuffer(1000);
     for (let i = 0; i < 250; i++) buf.push(i, i, 1, 0, 0, 0);
 
@@ -32,7 +32,7 @@ describe("InstanceBuffer paketleme", () => {
     expect(BYTES_PER_INSTANCE).toBe(24);
   });
 
-  it("kapasite dolunca push false döner ve veri bozulmaz", () => {
+  it("returns false from push once capacity is full, leaving data intact", () => {
     const buf = new InstanceBuffer(2);
     expect(buf.push(1, 1, 1, 0, 0, 0)).toBe(true);
     expect(buf.push(2, 2, 2, 0, 0, 0)).toBe(true);
@@ -43,7 +43,7 @@ describe("InstanceBuffer paketleme", () => {
     expect(buf.data[6]).toBe(2);
   });
 
-  it("reset sayacı sıfırlar, diziyi yeniden ayırmaz", () => {
+  it("resets the counter without reallocating the array", () => {
     const buf = new InstanceBuffer(8);
     const ref = buf.data;
     buf.push(5, 5, 5, 0, 0, 0);
@@ -51,15 +51,15 @@ describe("InstanceBuffer paketleme", () => {
 
     expect(buf.length).toBe(0);
     expect(buf.usedBytes).toBe(0);
-    expect(buf.data).toBe(ref); // aynı ArrayBuffer, allocation yok
+    expect(buf.data).toBe(ref); // same ArrayBuffer, no allocation
   });
 
-  it("kapasite tam sayı ve pozitif olmalı", () => {
+  it("requires the capacity to be a positive integer", () => {
     expect(() => new InstanceBuffer(0)).toThrow(RangeError);
     expect(() => new InstanceBuffer(1.5)).toThrow(RangeError);
   });
 
-  it("şablon 4 köşe, 8 float ve birim kare", () => {
+  it("has a template of 4 corners, 8 floats, and a unit quad", () => {
     expect(QUAD_VERTICES.length).toBe(8);
     expect(Array.from(QUAD_VERTICES)).toEqual([0, 0, 0, 1, 1, 0, 1, 1]);
   });

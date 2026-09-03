@@ -1,7 +1,7 @@
 {
   "name": "webgl2-instanced-particles",
   "version": "1.0.0",
-  "description": "WebGL2 instanced rendering: iki yüz bin parçacık tek drawArraysInstanced çağrısında, vertexAttribDivisor ile örnek attribute'ları ve batching ile dürüst bayt karşılaştırması.",
+  "description": "Rendering 200,000 animated particles at 60 FPS in WebGL2: single-quad instanced rendering, dynamic vertex buffer streaming, and measuring upload bandwidth costs.",
   "type": "module",
   "license": "MIT",
   "scripts": {

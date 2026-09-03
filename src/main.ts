@@ -19,8 +19,8 @@ const el = {
 };
 
 if (!gl) {
-  el.mode.textContent = "WebGL2 yok";
-  throw new Error("Bu tarayıcıda WebGL2 context'i alınamadı");
+  el.mode.textContent = "no WebGL2";
+  throw new Error("Could not get a WebGL2 context in this browser");
 }
 
 let mode: RenderMode = "instanced";
@@ -30,7 +30,7 @@ let path: ParticleRenderPath;
 
 const sample = createSampler(500);
 
-// Canvas'ı ekrana göre boyutla (devicePixelRatio, en fazla 2x)
+// Size the canvas to the screen (devicePixelRatio, capped at 2x)
 function resizeCanvas(): void {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const w = Math.floor(canvas.clientWidth * dpr) || 800;
@@ -41,7 +41,7 @@ function resizeCanvas(): void {
   }
 }
 
-// Tek canvas, tek WebGL2 context: yol değişince sadece program ve VAO değişir.
+// One canvas, one WebGL2 context: switching paths only swaps the program and VAO.
 function setupPath(): void {
   path?.dispose();
   resizeCanvas();
@@ -52,9 +52,9 @@ function setupPath(): void {
 }
 
 function rebuildParticles(): void {
-  // Sahne deterministik: aynı tohum, aynı parçacık listesi
+  // The scene is deterministic: same seed, same particle list
   particles = makeParticles(count, canvas.width, canvas.height);
-  el.count.textContent = count.toLocaleString("tr-TR");
+  el.count.textContent = count.toLocaleString("en-US");
 }
 
 function syncButtons(): void {
@@ -84,7 +84,7 @@ document.querySelector("#modes")!.addEventListener("click", (e) => {
   const wanted = btn.dataset.mode as RenderMode;
   if (wanted === mode) return;
   mode = wanted;
-  const keep = particles; // sahne korunur, sadece yol değişir
+  const keep = particles; // the scene is kept, only the path changes
   setupPath();
   particles = keep;
 });
@@ -114,11 +114,11 @@ function frame(now: number): void {
 
   const { fps, frameMs } = sample(now);
   if (now - hudAt > 200) {
-    // HUD yazımı ölçümü kirletmesin: 200 ms'de bir
+    // Keep HUD writes out of the measurement: once every 200 ms
     hudAt = now;
     el.fps.textContent = fps.toFixed(0);
     el.ms.textContent = `${frameMs.toFixed(2)} ms`;
-    el.calls.textContent = stats.drawCalls.toLocaleString("tr-TR");
+    el.calls.textContent = stats.drawCalls.toLocaleString("en-US");
     el.bytes.textContent = `${(stats.bytesUploaded / 1048576).toFixed(2)} MB`;
   }
 

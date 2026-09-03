@@ -10,7 +10,7 @@ import {
 
 export interface InstancedRenderer {
   setResolution(width: number, height: number): void;
-  /** Dönüş: bu karede GPU'ya yüklenen bayt sayısı. */
+  /** Returns: the number of bytes uploaded to the GPU this frame. */
   draw(instances: Float32Array, count: number): number;
   dispose(): void;
 }
@@ -34,15 +34,15 @@ export function createInstancedRenderer(
   const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);
 
-  // 1) Şablon buffer'ı: bir kez yüklenir, bir daha dokunulmaz.
+  // 1) Template buffer: uploaded once, never touched again.
   const quadVbo = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, quadVbo);
   gl.bufferData(gl.ARRAY_BUFFER, QUAD_VERTICES, gl.STATIC_DRAW);
   gl.enableVertexAttribArray(aCorner);
   gl.vertexAttribPointer(aCorner, 2, gl.FLOAT, false, 0, 0);
-  gl.vertexAttribDivisor(aCorner, 0); // köşe başına ilerle
+  gl.vertexAttribDivisor(aCorner, 0); // advance per vertex
 
-  // 2) Örnek buffer'ı: kapasite kadar boş yer, her kare üzerine yazılır.
+  // 2) Instance buffer: empty room for the full capacity, rewritten each frame.
   const instanceVbo = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, instanceVbo);
   gl.bufferData(
@@ -51,7 +51,7 @@ export function createInstancedRenderer(
     gl.DYNAMIC_DRAW,
   );
 
-  // Üç attribute da AYNI buffer'dan, aynı 24 baytlık stride ile okur.
+  // All three attributes read the SAME buffer with the same 24-byte stride.
   gl.enableVertexAttribArray(aOffset);
   gl.vertexAttribPointer(aOffset, 2, gl.FLOAT, false, BYTES_PER_INSTANCE, 0);
   gl.vertexAttribDivisor(aOffset, 1);
@@ -96,11 +96,11 @@ export function createInstancedRenderer(
       gl.bindVertexArray(vao);
       gl.bindBuffer(gl.ARRAY_BUFFER, instanceVbo);
 
-      // Sadece dolu kısım: yeniden ayırma yok, üzerine yazma var.
+      // Only the filled part: no reallocation, we overwrite in place.
       const floats = count * FLOATS_PER_INSTANCE;
       gl.bufferSubData(gl.ARRAY_BUFFER, 0, instances, 0, floats);
 
-      // 4 köşelik şablon, count kere basılıyor.
+      // The 4-corner template, stamped count times.
       gl.drawArraysInstanced(gl.TRIANGLE_STRIP, 0, 4, count);
 
       return floats * BYTES_PER_FLOAT;

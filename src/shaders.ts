@@ -1,4 +1,4 @@
-// shaders.ts — DİKKAT: `#version 300 es` ilk satır olmak zorunda
+// shaders.ts — WATCH OUT: `#version 300 es` has to be the first line
 export const INSTANCED_VERTEX_SHADER = `#version 300 es
 in vec2 a_corner;
 in vec2 a_offset;
